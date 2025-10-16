@@ -39,14 +39,7 @@ console.log("Siège social : " + google.siegeSocial);
 console.log("\n=== Fondateurs ===");
 for (let i = 0; i < google.fondateurs.length; i++) {
   const fondateur = google.fondateurs[i];
-  console.log(
-    "- " +
-      fondateur.nom +
-      ", n� le " +
-      fondateur.dateNaissance +
-      " � " +
-      fondateur.lieuNaissance
-  );
+  console.log("- " +fondateur.nom +", né le " +fondateur.dateNaissance +" à " +fondateur.lieuNaissance);
 }
 
 console.log("\n=== Chiffres d'affaires (en milliards de $) ===");
@@ -54,3 +47,4 @@ for (let i = 0; i < google.chiffreAffaires.length; i++) {
   const ca = google.chiffreAffaires[i];
   console.log("- " + ca.annee + " : " + ca.montant + " milliards $");
 }
+
