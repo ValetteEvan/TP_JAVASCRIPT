@@ -1,6 +1,6 @@
 
 Vous pouvez y accéder directement en cliquant sur le lien ci-dessous :  
-[Accéder au TP 3](./chemin/vers/le/tp3) 🔗
+[Accéder au TP 3](../TestJs/TP-03) 🔗
 
 ---
 
