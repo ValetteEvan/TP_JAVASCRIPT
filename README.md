@@ -1,4 +1,4 @@
-# 📂 Mon Repo GitHub
+# 📂 Mon Repo GitHub JavaScript
 
 Bienvenue sur mon dépôt ! 👋  
 Ici vous trouverez mes travaux et TP réalisés en cours.
