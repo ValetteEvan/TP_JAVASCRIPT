@@ -49,6 +49,3 @@ gestionnaire.afficherTaches();
 // Marquer comme terminées
 gestionnaire.terminerTache(0);
 gestionnaire.terminerTache(2);
-
-// Affichage final
-gestionnaire.afficherTaches();
