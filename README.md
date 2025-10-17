@@ -5,7 +5,7 @@ Ici vous trouverez mes travaux et TP réalisés en cours.
 
 ---
 
-## 📝 TP 3-4-5
+## 📝 TP 3-4-5-6-7
 
-Le **TP 3-4-5** se situe dans le dossier suivant : TestJS
+Le **TP 3-4-5...** se situe dans le dossier suivant : TestJS
 
