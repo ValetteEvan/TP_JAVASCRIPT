@@ -1,6 +1,6 @@
 function tableauNombre(tableau)
 {
-    if (!Array.isArray(tableau)) {
+    if (!Array.isArray(tableau) || tableau === null) {
         throw new Error(`L'argument doit être un tableau. Vous avez fourni un type ${typeof tableau}.`);
     }
 
@@ -26,6 +26,12 @@ try {
 }
 try {
     console.log(tableauNombre({key: "value"}));
+} catch (error) {
+    console.error(`Erreur: ${error.message}`);
+}
+
+try {
+    console.log(tableauNombre([]));
 } catch (error) {
     console.error(`Erreur: ${error.message}`);
 }
