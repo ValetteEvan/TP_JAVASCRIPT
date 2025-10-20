@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP-08</title>
+    <script src="controleFormulaire.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to TP-08</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Contrôle de formulaire</h2>
+            <div id="messageErreur" style="display: none; background-color: red; color: white; padding: 10px; margin-bottom: 15px;"></div>
+            <form id="userForm">
+                <div>
+                    <label for="nom">Nom :</label>
+                    <input type="text" id="nom" name="nom" placeholder="Entrez votre nom">
+                </div>
+                <div>
+                    <label for="prenom">Prénom :</label>
+                    <input type="text" id="prenom" name="prenom" placeholder="Entrez votre prénom">
+                </div>
+                <div>
+                    <label for="dateNaissance">Date de naissance :</label>
+                    <input type="date" id="dateNaissance" name="dateNaissance">
+                </div>
+                <button type="submit">Soumettre</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
