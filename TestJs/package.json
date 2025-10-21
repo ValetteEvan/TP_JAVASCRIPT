@@ -1,6 +1,6 @@
 {
   "name": "testjs",
-  "module": "index.ts",
+  "module": "index.html",
   "type": "module",
   "private": true,
   "devDependencies": {

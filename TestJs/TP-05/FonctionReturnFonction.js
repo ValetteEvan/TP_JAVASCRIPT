@@ -4,7 +4,6 @@ function retournerFonction(n) {
     }
 }
 
-
 const multiplierPar2 = retournerFonction(2);
 const multiplierPar3 = retournerFonction(3);
 
