@@ -10,7 +10,8 @@ calculateButton.addEventListener('click', () => {
 
     if (isNaN(num1) || isNaN(num2)) {
         resultDiv.textContent = 'Veuillez entrer des nombres valides.';
-    } else {
+    } 
+    else  {
         let result;
         switch (operation) {
             case 'add':
