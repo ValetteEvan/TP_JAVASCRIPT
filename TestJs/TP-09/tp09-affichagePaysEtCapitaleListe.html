@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP09 - Affichage Pays et Capitale Liste</title>
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        #resultat {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            background-color: white;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            position: relative;
+        }
+        th.sortable {
+            cursor: pointer;
+            user-select: none;
+        }
+        th.sortable:hover {
+            background-color: #2980b9;
+        }
+        th.sortable i {
+            margin-left: 8px;
+            font-size: 14px;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .loading {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin-top: 50px;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .population-cell {
+            text-align: right;
+        }
+    </style>
+</head>
+<body onload="chargerPaysEtCapitale()">
+    <h1>Liste des Pays avec Capitale et Population</h1>
+    <div id="resultat" class="loading">Chargement des données...</div>
+    <script>
+        // Variable globale pour stocker les données et l'état du tri
+        let paysData = [];
+        let sortOrder = 'none'; // 'none', 'asc', 'desc'
+
+        function chargerPaysEtCapitale() {
+            // Création de l'objet XMLHttpRequest pour AJAX
+            var req = new XMLHttpRequest();
+
+            // URL de l'API avec les champs spécifiques
+            var url = "https://restcountries.com/v2/all?fields=name,capital,population,region";
+
+            // Configuration de la requête
+            req.open("GET", url, true);
+
+            // Fonction appelée quand l'état de la requête change
+            req.onreadystatechange = function() {
+                if (req.readyState === 4 && req.status === 200) {
+                    // Transformation en JSON
+                    let data = JSON.parse(req.responseText);
+
+                    // Sauvegarde des données
+                    paysData = data;
+
+                    // Affichage initial
+                    afficherTableau();
+                } else if (req.readyState === 4) {
+                    document.getElementById("resultat").innerHTML =
+                        "<p class='error'>Erreur lors du chargement des données (Status: " + req.status + ")</p>";
+                }
+            };
+
+            req.send();
+        }
+
+        function afficherTableau() {
+            // Début du tableau HTML
+            var html = "<table>";
+            html += "<thead>";
+            html += "<tr>";
+            html += "<th>Pays</th>";
+            html += "<th>Capitale</th>";
+            html += "<th class='sortable' onclick='trierParPopulation()'>Population " + getIconeTri() + "</th>";
+            html += "<th>Région</th>";
+            html += "</tr>";
+            html += "</thead>";
+            html += "<tbody>";
+
+            // Parcours de tous les pays
+            for (let i = 0; i < paysData.length; i++) {
+                let nomPays = paysData[i].name;
+                let capitale = paysData[i].capital || "N/A";
+                let population = paysData[i].population;
+                let region = paysData[i].region || "N/A";
+
+                html += "<tr>";
+                html += "<td><strong>" + nomPays + "</strong></td>";
+                html += "<td>" + capitale + "</td>";
+                html += "<td class='population-cell'>" + population.toLocaleString('fr-FR') + "</td>";
+                html += "<td>" + region + "</td>";
+                html += "</tr>";
+            }
+
+            html += "</tbody>";
+            html += "</table>";
+
+            // Insertion du HTML
+            document.getElementById("resultat").innerHTML = html;
+        }
+
+        function getIconeTri() {
+            // Retourne l'icône Font Awesome appropriée selon l'état du tri
+            if (sortOrder === 'none') {
+                // Icône pour colonne non triée
+                return '<i class="fa-solid fa-sort"></i>';
+            } else if (sortOrder === 'asc') {
+                // Icône pour tri ascendant (croissant)
+                return '<i class="fa-solid fa-sort-up"></i>';
+            } else if (sortOrder === 'desc') {
+                // Icône pour tri descendant (décroissant)
+                return '<i class="fa-solid fa-sort-down"></i>';
+            }
+        }
+
+        function trierParPopulation() {
+            // Changement de l'état du tri selon un cycle : none -> asc -> desc -> asc -> ...
+            if (sortOrder === 'none') {
+                sortOrder = 'asc';
+                // Tri croissant (du plus petit au plus grand)
+                paysData.sort(function(a, b) {
+                    return a.population - b.population;
+                });
+            } else if (sortOrder === 'asc') {
+                sortOrder = 'desc';
+                // Tri décroissant (du plus grand au plus petit)
+                paysData.sort(function(a, b) {
+                    return b.population - a.population;
+                });
+            } else {
+                sortOrder = 'asc';
+                // Retour au tri croissant
+                paysData.sort(function(a, b) {
+                    return a.population - b.population;
+                });
+            }
+
+            // Réaffichage du tableau avec les données triées
+            afficherTableau();
+        }
+    </script>
+</body>
+</html>
