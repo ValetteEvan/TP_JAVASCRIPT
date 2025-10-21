@@ -1,6 +1,6 @@
 // Variable globale pour stocker les données et l'état du tri
 let paysData = [];
-let sortOrder = 'none'; // 'none', 'asc', 'desc'
+let sortOrder = 'none'; 
 
 function chargerPaysEtCapitale() {
     // Création de l'objet XMLHttpRequest pour AJAX
