@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API Utilisateurs</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        pre {
+            background: #2d2d2d;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .success { color: #4ec9b0; }
+        .error { color: #f48771; }
+    </style>
+</head>
+<body>
+    <h1>Test API Utilisateurs</h1>
+
+    <div>
+        <label>ID Créateur:</label>
+        <input type="text" id="idCreateur" value="test_evan" style="padding: 10px; width: 300px;">
+    </div>
+
+    <button onclick="testMinimal()">Test 1: Données minimales</button>
+    <button onclick="testComplet()">Test 2: Données complètes</button>
+    <button onclick="testCharger()">Test 3: Charger utilisateurs</button>
+
+    <div id="result"></div>
+
+    <script>
+        const API_URL = 'https://digicode.cleverapps.io/utilisateurs';
+
+        async function testMinimal() {
+            const idCreateur = document.getElementById('idCreateur').value;
+
+            const utilisateur = {
+                idCreateur: idCreateur,
+                nom: "Dupont",
+                prenom: "Jean",
+                genre: "M",
+                dateNaissance: "1990-01-15"
+            };
+
+            log('Test avec données minimales:', utilisateur);
+            await creer(utilisateur);
+        }
+
+        async function testComplet() {
+            const idCreateur = document.getElementById('idCreateur').value;
+
+            const utilisateur = {
+                idCreateur: idCreateur,
+                nom: "Martin",
+                prenom: "Marie",
+                genre: "F",
+                dateNaissance: "1985-05-20",
+                lieuNaissance: "Paris",
+                departementNaissance: "75",
+                numeroRue: "123",
+                libelleRue: "Rue de la Paix",
+                codePostal: "75001",
+                ville: "Paris"
+            };
+
+            log('Test avec données complètes:', utilisateur);
+            await creer(utilisateur);
+        }
+
+        async function creer(utilisateur) {
+            try {
+                log('Envoi de la requête POST...');
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(utilisateur)
+                });
+
+                log(`Status: ${response.status} ${response.statusText}`);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    logError('Erreur du serveur:', errorText);
+                    return;
+                }
+
+                const result = await response.json();
+                logSuccess('Utilisateur créé avec succès:', result);
+
+            } catch (error) {
+                logError('Erreur:', error.message);
+            }
+        }
+
+        async function testCharger() {
+            const idCreateur = document.getElementById('idCreateur').value;
+
+            try {
+                log(`Chargement des utilisateurs pour: ${idCreateur}`);
+
+                const response = await fetch(`${API_URL}/${encodeURIComponent(idCreateur)}`);
+
+                log(`Status: ${response.status} ${response.statusText}`);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    logError('Erreur du serveur:', errorText);
+                    return;
+                }
+
+                const users = await response.json();
+                logSuccess(`${users.length} utilisateur(s) trouvé(s):`, users);
+
+            } catch (error) {
+                logError('Erreur:', error.message);
+            }
+        }
+
+        function log(message, data = null) {
+            const result = document.getElementById('result');
+            const pre = document.createElement('pre');
+            pre.textContent = message;
+            if (data) {
+                pre.textContent += '\n' + JSON.stringify(data, null, 2);
+            }
+            result.appendChild(pre);
+        }
+
+        function logSuccess(message, data = null) {
+            const result = document.getElementById('result');
+            const pre = document.createElement('pre');
+            pre.className = 'success';
+            pre.textContent = '✓ ' + message;
+            if (data) {
+                pre.textContent += '\n' + JSON.stringify(data, null, 2);
+            }
+            result.appendChild(pre);
+        }
+
+        function logError(message, data = null) {
+            const result = document.getElementById('result');
+            const pre = document.createElement('pre');
+            pre.className = 'error';
+            pre.textContent = '✗ ' + message;
+            if (data) {
+                pre.textContent += '\n' + data;
+            }
+            result.appendChild(pre);
+        }
+    </script>
+</body>
+</html>
